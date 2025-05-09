@@ -1,10 +1,11 @@
 import { AppDispatcher, Action } from './Dispatcher';
+import { AdminActions, GardenActions } from "./Actions";
 
 export type State = {};
 
 type Listener = (state: State) => void;
 
-class Store {
+export class Store {
     private _myState: State = {}
 
     private _listeners: Listener[] = [];
@@ -21,7 +22,9 @@ class Store {
         switch (action.type) {
             case "UNO":
                 break;
+
         }
+        
     }
 
     private _emitChange(): void {
