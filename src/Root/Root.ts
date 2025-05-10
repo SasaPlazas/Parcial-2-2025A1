@@ -1,18 +1,23 @@
 import { store } from '../flux/Store';
-
-
+import { getPlants } from '../services/Plants';
+import {Garden, GardenActions} from "../flux/Actions";
 class Root extends HTMLElement {
-        // product = product[]:[]
+
+        plants = plants[]: [];
+
+        
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
     }
 
     async connectedCallback() {
+        store.getState();
+        await GardenActions.getPlants();
+        this.plants = getPlants();
+        
          // store.load();
     // await productsActions.GetProducts();
-    // this.product = GetProducts();
-    // this.render();
         this.render();
     }
 
@@ -22,6 +27,9 @@ class Root extends HTMLElement {
         this.shadowRoot.innerHTML = `app
         
         `;
+
+        
+
 
 
             //const plantcard = x cosa. getAttribute ('X')

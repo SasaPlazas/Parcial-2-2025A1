@@ -1,5 +1,6 @@
 import { AppDispatcher, Action } from './Dispatcher';
-import { AdminActions, GardenActions } from "./Actions";
+import { AdminActions, GardenActions, Garden} from "./Actions";
+import { getPlants } from '../services/Plants';
 
 export type State = {};
 
@@ -20,7 +21,8 @@ export class Store {
 
     _handleActions(action: Action): void {
         switch (action.type) {
-            case "UNO":
+            case Garden.GET_PLANTS, 
+            payload: getPlants();
                 break;
 
         }

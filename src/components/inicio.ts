@@ -1,28 +1,39 @@
 import {getPlants } from "../services/Plants";
-import {Store} from "../flux/Store";
+import {Store, State} from "../flux/Store";
 class Home extends  HTMLElement {
     constructor(){
         super();
         this.attachShadow({ mode: 'open' });
     }
 
-    connectedCallback(){
-        // store.subscribe(State:state) => {handleActions(state)}
+    async connectedCallback(){
+        Store.subscribe((state:State) => {handleActions(state)})
         this.render();
+        await getPlants();
+
     }
 
-    // handleActions(State: state){
-    // this.render (state);
+    handleActions(state: State){
+    this.render (state);
+    }
 
        render(){
 
     if (!this.shadowRoot) return;
          this.shadowRoot.innerHTML = `
+
         `;
 
-    
-    const card = document.getElementById("div1");
 
+
+        
+        const commonName = id.getElementById("id");
+
+
+
+    }
+    
+   
         
     }
 

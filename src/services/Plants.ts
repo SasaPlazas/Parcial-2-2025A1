@@ -11,6 +11,6 @@ export const getPlants = async () =>{
         return plants;
     }
     catch(error){
-        return null; 
+        return error; 
     }
 }
