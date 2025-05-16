@@ -1,40 +1,74 @@
-import { store } from '../flux/Store';
-import { getPlants } from '../services/Plants';
-import {Garden, GardenActions} from "../flux/Actions";
+import { gardenActions, plantsManagerAction, Screen } from "../flux/Actions";
+import { State, store } from "../flux/Store";
+
 class Root extends HTMLElement {
-
-        plants = plants[]: [];
-
-        
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
     }
 
-    async connectedCallback() {
-        store.getState();
-        await GardenActions.getPlants();
-        this.plants = getPlants();
-        
-         // store.load();
-    // await productsActions.GetProducts();
-        this.render();
+    handleChange(state: State) {
+        this.render(state);
     }
 
-  async render() {
+    async connectedCallback() {
+        store.load();
+        store.subscribe((state: State) => this.handleChange(state));
+        await plantsManagerAction.getPlants();
+        console.log(store.getState());
+        this.render(store.getState());
+    }
+    
+    async render(state = store.getState()) {
         if (!this.shadowRoot) return;
 
-        this.shadowRoot.innerHTML = `app
-        
+        this.shadowRoot.innerHTML = `
         `;
 
+        switch (state.screen) {
+            case Screen.GARDEN:
+                this.shadowRoot.innerHTML = `
+
+                                <style>
+                    .root-container {
+                    width: 100vw;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: linear-gradient(to bottom, #c2ffe3, #e2b2ff, #f050f8);
+                    }
+                </style>
+
+                <div class="root-container">
+                    <garden-component></garden-component>
+                </div>
+                `;
+                break;
+            
+            case Screen.PLANTS_MANAGER:
+                this.shadowRoot.innerHTML = `
+                <style>
+                .manager-container{
+                  background: linear-gradient(to bottom, #c2ffe3, #e2b2ff, #f050f8);
+                }
+                </style>
+
+                <div class="manager-container">
+                    <plants-manager></plants-manager>
+                </div>
         
+                `;
+                break;
 
+            case Screen.GARDEN_MANAGER:
+                this.shadowRoot.innerHTML = `
+                    <garden-manager></garden-manager>
+                `;
+                break;
 
-
-            //const plantcard = x cosa. getAttribute ('X')
-
-    //plantcard.appendchild;
+            default:
+                break;
+        }
     }
 }
 

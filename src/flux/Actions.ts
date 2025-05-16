@@ -1,102 +1,72 @@
 import { AppDispatcher } from './Dispatcher';
 import { plantsData } from "../services/Plants";
+import { Plant } from '../services/Plants';
 
-export const Garden = {
-  CREATE_PLANT: 'CREATE_PLANT',
-  DELETE_PLANT: 'DELETE_PLANT',
+export const garden = {
+  ADD_TO_GARDEN: 'ADD_TO_GARDEN',
+  REMOVE_FROM_GARDEN: 'REMOVE_FROM_GARDEN',
   CHANGE_NAME: 'CHANGE_NAME',
+};
+
+
+export enum Screen {
+  GARDEN = 'GARDEN',
+  PLANTS_MANAGER = 'PLANTS_MANAGER',
+  GARDEN_MANAGER = 'GARDEN_MANAGER',
+}
+
+export const screenActionType = {
+  CHANGE_SCREEN: 'CHANGE_SCREEN',
+};
+
+export const plantsManager = {
   GET_PLANTS: 'GET_PLANTS',
-};
+  MODIFY_PLANT: 'MODIFY_PLANT',
+}
 
-export const Admin = {
-  EDIT_PLANT: 'EDIT_PLANT',
-};
-
-export const StoreActionTypes = {
-  ...Garden,
-  ...Admin,
-};
-
-export type PlantaPayload = {
-  id: number,
-  common_name: string,
-  scientific_name: string,
-  img: string,
-  type: string,
-  origin: string,
-  flowering_season: string,
-  sun_exposure: string,
-  watering: string
-};
-
-
-export const GardenActions = {
-  create: (payload: PlantaPayload) => {
+export const plantsManagerAction = {
+  getPlants: async () => {
+    const plants = plantsData;
     AppDispatcher.dispatch({
-      type: Garden.CREATE_PLANT,
-      payload
+      type: plantsManager.GET_PLANTS,
+      payload: plants
     });
   },
-
-  delete: (id: number) => {
+  modifyPlant: async (plant: Plant, index: Number) => {
+    console.log("Plant in Action:", plant);
     AppDispatcher.dispatch({
-      type: Garden.DELETE_PLANT,
-      payload: id
+      type: plantsManager.MODIFY_PLANT,
+      payload: { plant, index}
+    });
+  }
+}
+
+export const screenActions = {
+  changeScreen: (newScreen: Screen) => {
+    AppDispatcher.dispatch({
+      type: screenActionType.CHANGE_SCREEN,
+      payload: newScreen
+    });
+  }
+}
+
+export const gardenActions = {
+  addToGarden: async(plant: Plant) => {
+    AppDispatcher.dispatch({
+      type: garden.ADD_TO_GARDEN,
+      payload: plant
     });
   },
-
+  removeFromGarden: (plantIndex: number) => {
+    AppDispatcher.dispatch({
+      type: garden.REMOVE_FROM_GARDEN,
+      payload: plantIndex
+    });
+  },
   changeName: (name: string) => {
     AppDispatcher.dispatch({
-      type: Garden.CHANGE_NAME,
+      type: garden.CHANGE_NAME,
       payload: name
-    });
-  },
-
-  get: () => {
-    AppDispatcher.dispatch({
-      type: Garden.GET_PLANTS,
-      payload: plantsData
-    });
-  },
-};
-
-export const AdminActions = {
-  edit: (updatedPlant: PlantaPayload) => {
-    AppDispatcher.dispatch({
-      type: Admin.EDIT_PLANT,
-      payload: updatedPlant
     });
   }
 };
-export interface GetPlantsAction {
-  type: typeof Garden.GET_PLANTS;
-  payload: PlantaPayload[];
-}
-
-export interface CreatePlantAction {
-  type: typeof Garden.CREATE_PLANT;
-  payload: PlantaPayload;
-}
-
-export interface DeletePlantAction {
-  type: typeof Garden.DELETE_PLANT;
-  payload: number; 
-}
-
-export interface ChangeNameAction {
-  type: typeof Garden.CHANGE_NAME;
-  payload: string;
-}
-
-export interface EditPlantAction {
-  type: typeof Admin.EDIT_PLANT;
-  payload: PlantaPayload;
-}
-
-
-export type StoreAction =
-  | GetPlantsAction
-  | CreatePlantAction
-  | DeletePlantAction
-  | ChangeNameAction
-  | EditPlantAction;
