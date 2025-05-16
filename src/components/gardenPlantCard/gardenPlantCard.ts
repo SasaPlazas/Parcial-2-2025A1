@@ -37,9 +37,11 @@ class GardenPlantCard extends HTMLElement{
                     text-align: center;
                 }
                 .plant-image {
-                    width: 400px;
-                    height: auto;
-                    border-radius: 8px;
+                    width: 100%;
+                height: 220px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin-bottom: 1rem;
                 }
                 .manage-button {
                     color: white;
@@ -59,7 +61,8 @@ class GardenPlantCard extends HTMLElement{
                 #add-button {
                     background-color:rgb(213, 50, 110);
                     border-radius: 6px;
-
+                    
+                    
                 }   
             </style>
             <div class="plant-card">

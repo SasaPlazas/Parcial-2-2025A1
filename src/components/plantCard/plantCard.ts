@@ -26,19 +26,30 @@ class PlantCard extends HTMLElement {
 
         this.shadowRoot.innerHTML = `
         <style>
-                .plant-card {
+                    .plant-card {
                     width: 400px;
+                    min-height: 580px; /* ✨ Altura mínima para emparejarlas */
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: start;
                     border: 1px solid #ccc;
-                    border-radius: 8px;
+                    border-radius: 12px;
                     padding: 16px;
                     margin: 16px;
                     text-align: center;
+            
                 }
                 .plant-image {
-                    width: 400px;
-                    height: auto;
-                    border-radius: 8px;
-                }
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin-bottom: 1rem;
+            }
+
+             h3, h4, p {
+        margin: 0.5rem 0;
+    }
             </style>
             <div class="plant-card">
                 <img src="${image}" alt="${commonName}" class="plant-image"/>
