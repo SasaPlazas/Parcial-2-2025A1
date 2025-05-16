@@ -1,39 +1,70 @@
-import { AppDispatcher, Action } from './Dispatcher';
-import { AdminActions, GardenActions, Garden} from "./Actions";
-import { getPlants } from '../services/Plants';
+import { AppDispatcher } from './Dispatcher';
+import { StoreActionTypes, PlantaPayload, StoreAction } from './Actions'; 
+import { Action } from './Dispatcher';
 
-export type State = {};
+type Callback = () => void;
 
-type Listener = (state: State) => void;
+class PlantStore {
+  private plants: PlantaPayload[] = [];
+  private gardenName: string = 'Mi Jardín';
+  private listeners: Callback[] = [];
 
-export class Store {
-    private _myState: State = {}
+  constructor() {
+    AppDispatcher.register(this.handleActions.bind(this));
+  }
 
-    private _listeners: Listener[] = [];
+  getPlants() {
+    return this.plants;
+  }
 
-    constructor() {
-        AppDispatcher.register(this._handleActions.bind(this));
-    }
+  getGardenName() {
+    return this.gardenName;
+  }
 
-    getState() {
-        return {};
-    }
+  subscribe(callback: Callback) {
+    this.listeners.push(callback);
+  }
 
-    _handleActions(action: Action): void {
-        switch (action.type) {
-            case Garden.GET_PLANTS, 
-            payload: getPlants();
-                break;
+  unsubscribe(callback: Callback) {
+    this.listeners = this.listeners.filter(cb => cb !== callback);
+  }
 
-        }
-        
-    }
+  private emitChange() {
+    this.listeners.forEach(callback => callback());
+  }
 
-    private _emitChange(): void {
-        for (const listener of this._listeners) { }
-    }
+ private handleActions(action: StoreAction | Action ) {
+  switch (action.type) {
+    case StoreActionTypes.GET_PLANTS:
+      this.plants = action.payload as PlantaPayload[]; 
+      this.emitChange();
+      break;
 
-    unsubscribe(listener: Listener): void { }
+    case StoreActionTypes.CREATE_PLANT:
+      this.plants = [...this.plants, action.payload as PlantaPayload];
+      this.emitChange();
+      break;
+
+    case StoreActionTypes.DELETE_PLANT:
+      this.plants = this.plants.filter(plant => plant.id !== (action.payload as number));
+      this.emitChange();
+      break;
+
+    case StoreActionTypes.CHANGE_NAME:
+      this.gardenName = action.payload as string;
+      this.emitChange();
+      break;
+
+    case StoreActionTypes.EDIT_PLANT:
+      this.plants = this.plants.map(plant =>
+        plant.id === (action.payload as PlantaPayload).id ? action.payload as PlantaPayload : plant
+      );
+      this.emitChange();
+      break;
+
+    default:
+      break;
+  }
 }
-
-export const store = new Store();
+}
+export const store = new PlantStore();
