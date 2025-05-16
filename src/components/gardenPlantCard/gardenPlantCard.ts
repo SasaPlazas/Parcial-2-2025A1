@@ -54,9 +54,12 @@ class GardenPlantCard extends HTMLElement{
                 }
                 #remove-button {
                     background-color:rgb(175, 104, 76);
+                     border-radius: 6px;
                 }
                 #add-button {
-                    background-color:rgb(76, 175, 104);
+                    background-color:rgb(213, 50, 110);
+                    border-radius: 6px;
+
                 }   
             </style>
             <div class="plant-card">

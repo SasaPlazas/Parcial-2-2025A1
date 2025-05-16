@@ -54,9 +54,11 @@ class AdminPlantCard extends HTMLElement{
                 }
                 #edit-button {
                     background-color: rgb(76, 175, 165);
+                    border-radius: 6px;
                 }
                 #submit-button {
                     background-color: rgb(76, 175, 104);
+                    border-radius: 6px; 
                 }  
             </style>
             <div class="plant-card">
